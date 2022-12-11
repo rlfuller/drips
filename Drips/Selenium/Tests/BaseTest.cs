@@ -1,18 +1,18 @@
 ﻿using Drips.Configuration;
-using Drips.Utilities;
+using Drips.Selenium;
 using OpenQA.Selenium;
 
 namespace Drips.Tests
 {
     public class BaseTest
     {
-        protected IWebDriver driver = Driver.GetInstance();
+        protected IWebDriver driver = Selenium.Driver.GetInstance();
         protected ITestConfig config = TestConfigFactory.CurrentEnvironmentTestConfig;
 
         [SetUp]
         public void Setup()
         {
-            driver = Driver.GetInstance();
+            driver = Selenium.Driver.GetInstance();
             driver.Navigate().GoToUrl(config.BaseUrl);
         }
 

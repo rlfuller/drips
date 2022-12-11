@@ -3,7 +3,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 
-namespace Drips.Utilities
+namespace Drips.Selenium
 {
     /// <summary>
     /// Create a single instance of a webdriver, based on an environment variable
@@ -19,7 +19,7 @@ namespace Drips.Utilities
                 return webDriver;
             }
 
-            string? browser = System.Environment.GetEnvironmentVariable(Constants.AutomationBrowserVar);
+            string? browser = Environment.GetEnvironmentVariable(Constants.AutomationBrowserVar);
 
             if (browser is null)
             {

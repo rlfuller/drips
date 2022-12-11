@@ -7,5 +7,7 @@
         string ITestConfig.Username => "jdoe@test.com";
 
         string ITestConfig.Password => "Test123$";
+
+        string ITestConfig.ApiBaseUrl => "https://reqres.in/api/";
     }
 }

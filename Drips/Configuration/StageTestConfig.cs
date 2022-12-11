@@ -7,5 +7,8 @@
         string ITestConfig.Username => "stageusername@test.com";
 
         string ITestConfig.Password => "Test123$";
+
+        string ITestConfig.ApiBaseUrl => "https://stage.reqres.in/api/";
+
     }
 }

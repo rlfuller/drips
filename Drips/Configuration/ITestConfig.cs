@@ -27,6 +27,7 @@
         string Username { get; }
         string Password { get; }
 
+        string ApiBaseUrl { get; }
 
     }
 }
