@@ -1,6 +1,6 @@
 ﻿namespace Drips.Configuration
 {
-    internal interface ITestConfig
+    public interface ITestConfig
     {
         string BaseUrl { get; }
 

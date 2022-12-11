@@ -2,7 +2,7 @@
 {
     internal class TestConfigFactory
     {
-        static ITestConfig CurrentEnvironmentTestConfig => CreateTestConfig(System.Environment.GetEnvironmentVariable(Constants.AutomationEnvironmentVar));
+        internal static ITestConfig CurrentEnvironmentTestConfig => CreateTestConfig(System.Environment.GetEnvironmentVariable(Constants.AutomationEnvironmentVar));
 
         static ITestConfig CreateTestConfig(string env)
         {

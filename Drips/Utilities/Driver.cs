@@ -6,7 +6,7 @@ using OpenQA.Selenium.Firefox;
 namespace Drips.Utilities
 {
     /// <summary>
-    /// Singleton
+    /// Create a single instance of a webdriver, based on an environment variable
     /// </summary>
     public class Driver
     {
