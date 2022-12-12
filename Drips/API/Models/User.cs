@@ -31,7 +31,7 @@ namespace Drips.API.Models
     internal class UserListBody : Base
     {
         [JsonProperty("page")]
-        public int Page { get; set; }
+        public int CurrentPageNumber { get; set; }
 
         [JsonProperty("per_page")]
         public int PerPage { get; set; }
