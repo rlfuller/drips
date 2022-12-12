@@ -7,56 +7,49 @@ namespace Drips.API.Tests
 {
     internal class UserTest : BaseTest
     {
-        [Test]
-        public void HelloWorldUser()
-        {
-            // arrange
-            
-            RestRequest request = new RestRequest($"users/2", Method.Get);
+        const int userId = 2;
 
-            // act
+        [Test]
+        public void UserStatusTest()
+        {
+            RestRequest request = new RestRequest($"/users/{userId}", Method.Get);
+
             RestResponse response = client.Execute(request);
 
-            // assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
         [Test]
-        public void HelloWorldUserDataTest()
+        public void UserDataTest()
         {
-            // arrange
-            
-            RestRequest request = new RestRequest($"users/2", Method.Get);
+            RestRequest request = new RestRequest($"users/{userId}", Method.Get);
 
-            // act
             RestResponse response = client.Execute(request);
 
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
             UserBody body = JsonConvert.DeserializeObject<UserBody>(response.Content);
 
-            // assert
             Assert.That(body.user.Id, Is.EqualTo(2));
-
         }
 
-        [Test]
-        public void HelloWorldUserListDataTest()
+        [TestCase(12, 1, TestName = "One user per page, last page has status OK.")]
+        [TestCase(3, 5, TestName = "Five users per page, last page has status OK.")]
+        public void UserListDataTest(int expectedPages, int perPage)
         {
-            // arrange
-
-            RestRequest request = new RestRequest($"users?page=5&per_page=1", Method.Get);
-
-            // act
+            RestRequest request = new RestRequest($"users?page={expectedPages}&per_page={perPage}", Method.Get);
             RestResponse response = client.Execute(request);
 
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-
             UserListBody body = JsonConvert.DeserializeObject<UserListBody>(response.Content);
 
-            // assert
-            //Assert.That(body.user.Id, Is.EqualTo(2));
+            // need assertion on the pagination
+            Assert.That(body.PerPage, Is.EqualTo(perPage));
+            Assert.That(body.Users.Count, Is.EqualTo(body.TotalUsers / perPage));
+            Assert.That(body.TotalUsers / perPage, Is.EqualTo(body.TotalPages));
 
+            request = new RestRequest($"/users?page={expectedPages + 1}&perPage={perPage}", Method.Get);
+            response = client.Execute(request);
         }
 
         [TestCase(999, true, TestName = "Delay times out")]
@@ -83,6 +76,17 @@ namespace Drips.API.Tests
                 RestResponse response = client.Execute(request);
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             }
+        }
+
+        [Test]
+        public void UserInvalidAcceptHeaderTest()
+        {
+            RestRequest request = new RestRequest("users/2", Method.Get);
+            request.AddHeader("Accept", "application/xml");
+
+            RestResponse response = client.Execute(request);
+
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotAcceptable));
         }
     }
 }

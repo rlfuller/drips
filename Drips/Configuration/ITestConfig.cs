@@ -29,5 +29,21 @@
 
         string ApiBaseUrl { get; }
 
+        Random Random {
+            get
+            {
+                string? seed = Environment.GetEnvironmentVariable("Seed");
+                try
+                {
+                    return new Random(int.Parse(seed));
+                }
+                catch
+                {
+                    return new Random();
+                }
+
+            }
+        }
+
     }
 }
