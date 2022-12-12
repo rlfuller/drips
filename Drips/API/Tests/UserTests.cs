@@ -5,14 +5,12 @@ using System.Net;
 
 namespace Drips.API.Tests
 {
-    internal class UserTest : BaseTest
+    internal class UserTests : BaseTest
     {
         const int userId = 2;
         const int invalidUser = 1000000000;
 
-        ///
         /// <summary>Smoke Test to check the status of the users endpoint</summary>
-        ///
         [Test]
         public void UserStatusTest()
         {
@@ -24,9 +22,7 @@ namespace Drips.API.Tests
         }
 
 
-        ///
         /// <summary>Validate that the requested user is returned</summary>
-        ///
         [Test]
         public void UserDataTestWithValidUser()
         {
@@ -41,9 +37,7 @@ namespace Drips.API.Tests
             Assert.That(body.user.Id, Is.EqualTo(2));
         }
 
-        ///
         /// <summary>Validate that request for invalid user fails</summary>
-        ///
         [Test]
         public void UserDataTestWithInvalidUser()
         {
@@ -59,13 +53,11 @@ namespace Drips.API.Tests
         }
 
 
-        ///
         /// <summary>
         /// Checks the pagination results from the api
         /// </summary>
         /// <param name="lastPage">The page received should be the last page of the set</param>
         /// <param name="usersPerPage">Number of users per page</param>
-        ///
         [TestCase(12, 1, TestName = "One user per page, last page has status OK.")]
         [TestCase(3, 5, TestName = "Five users per page, last page has status OK.")]
         public void UserListDataPaginationWithValidArgumentsTest(int lastPage, int usersPerPage)
@@ -96,18 +88,16 @@ namespace Drips.API.Tests
             
         }
 
-        ///
         /// <summary>
         /// Ensures that api should return appropriate status code when arguments are invalid
         /// If we send a negative page count, we would expect a 400 response
         /// </summary>
         /// <param name="usersPerPage">Number of users per page</param>
         /// <param name="page">The requested page (current page)</param>
-        ///
         [TestCase(3, 0, TestName = "0 current page, status should be 400.")]
         [TestCase(-4, 1, TestName = "Negative users per page, status should be 400.")]
         [TestCase(3, -1, TestName = "Negative page number, status should be 400.")]
-        public void UserListDataPaginationWithInvalidArgumentsTest(int usersPerPage, int page)
+        public void UserListDataPaginationWithInvalidArgumentsFails(int usersPerPage, int page)
         {
             RestRequest request = new RestRequest($"users?page={page}&per_page={usersPerPage}", Method.Get);
             RestResponse response = client.Execute(request);
@@ -116,13 +106,11 @@ namespace Drips.API.Tests
         }
 
 
-        ///
         /// <summary>
         /// Ensure that api returns in a reasonable amount of time or else throws a timeout exception
         /// </summary>
         /// <param name="shouldFail">Boolean that indicates if we are expecting the api to timeout or not based on the configuration of a max timeout in the request</param>
         /// <param name="timeout">Indicates how long to wait before a timeout</param>
-        ///
         [TestCase(999, true, TestName = "Delay times out")]
         [TestCase(2000, false, TestName = "Responds in a reasonable timeframe")]
         public void DelayedResponseUserTest(int timeout, bool shouldFail)
@@ -149,11 +137,10 @@ namespace Drips.API.Tests
             }
         }
 
-        ///
+
         /// <summary>
         /// Validate that only requested type of data is received from api request by setting the Accept header to only accept xml. In this case, we would not expect JSON to be returned. If xml is not supported, we would expect an error to be returned.
         /// </summary>
-        ///
         [Test]
         public void UserInvalidAcceptHeaderTest()
         {
@@ -165,6 +152,9 @@ namespace Drips.API.Tests
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotAcceptable));
         }
 
+        /// <summary>
+        /// Validate that Create User is successful 
+        /// </summary>
         [Test]
         public void CreateUserIsSuccessful()
         {
@@ -191,6 +181,9 @@ namespace Drips.API.Tests
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
+        /// <summary>
+        /// Valid that create user is unsuccessful if payload is missing
+        /// </summary>
         [Test]
         public void CreateUserWithEmptyPayloadIsNotSuccessful()
         {
@@ -205,6 +198,9 @@ namespace Drips.API.Tests
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
+        /// <summary>
+        /// Validate that create user is unsuccessful if content-type header is missing. 
+        /// </summary>
         [Test]
         public void CreateUserWithMissingContentTypeIsNotSuccessful()
         {
@@ -218,6 +214,9 @@ namespace Drips.API.Tests
 
         }
 
+        /// <summary>
+        /// Validate that update user is successful given a valid user
+        /// </summary>
         [Test]
         public void UpdateUserIsSuccessful()
         {
@@ -240,6 +239,9 @@ namespace Drips.API.Tests
             //it's only there for the crud endpoints
         }
 
+        /// <summary>
+        /// Given a valid user, validate that delete user is successful. For this test, we will first crete a new user, then delete them
+        /// </summary>
         [Test]
         public void DeleteUserIsSuccessful()
         {

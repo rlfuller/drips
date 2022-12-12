@@ -64,13 +64,19 @@ namespace Drips.API.Models
         public int Id { get; set; }
     }
 
-    internal class LoginResponseBody
+    internal class LoginResponseBodySuccessful
     {
         [JsonProperty("token")]
         public string Token { get; set; }
     }
 
-    internal class RegisterResponseBody : LoginResponseBody
+    internal class LoginResponseBodyUnsuccessful
+    {
+        [JsonProperty("error")]
+        public string Error { get; set; }
+    }
+
+    internal class RegisterResponseBody : LoginResponseBodySuccessful
     {
         [JsonProperty("id")]
         public int Id { get; set; }
