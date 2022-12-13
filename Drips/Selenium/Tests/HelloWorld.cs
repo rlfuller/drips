@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Drips.Selenium.Pages;
+using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,9 @@ namespace Drips.Tests
         public void HelloWorldTest()
         {
             Console.WriteLine("Rachel");
+
+            var search = new SearchResultsPage(driver);
+            search.SearchForItem("pants");
         }
     }
 }
