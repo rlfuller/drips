@@ -1,12 +1,6 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.DevTools.V106.DOM;
-using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Interactions;
 using SeleniumExtras.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Drips.Selenium.Pages
 {
@@ -19,7 +13,7 @@ namespace Drips.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = "ol.product-items")]
         private IWebElement returnedResults { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "li.item.product.product-item")]
+        [FindsBy(How = How.CssSelector, Using = "li.product-item")]
         private IList<IWebElement> allItemsFromSearch { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "#maincontent div.message.notice")]
@@ -38,7 +32,34 @@ namespace Drips.Selenium.Pages
 
         public IList<IWebElement> GetSearchResults()
         {
-            return WaitForElements(By.CssSelector("li.item.product.product-item"));
+            return WaitForElements(By.CssSelector("li.product-item"));
+        }
+
+        public void SelectRandomItemAndClick(int remaining = 3)
+        {
+            try
+            {
+                var searchResults = GetSearchResults();
+                int randomIndex = config.Random.Next(0, searchResults.Count);
+
+                var item = searchResults[randomIndex];//.FindElement(By.CssSelector(".product-item-info"));
+
+                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                js.ExecuteScript("arguments[0].scrollIntoView(true);", item);
+
+                ClickWhenClickable(item);
+            }
+            catch (StaleElementReferenceException ex)
+            {
+                if (remaining > 0)
+                {
+                    SelectRandomItemAndClick(--remaining);
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
         }
     }
 }

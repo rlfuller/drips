@@ -21,7 +21,7 @@ namespace Drips.API.Tests
             request.AddHeader("Content-type", "application/json");
 
             request.AddBody(request.AddJsonBody(new { email = "eve.holt@reqres.in",
-                                                      password = $"{password}"
+                                                      password = password
             }));
 
             RestResponse response = client.Execute(request);
@@ -51,7 +51,7 @@ namespace Drips.API.Tests
             request.AddBody(request.AddJsonBody(new
             {
                 email = "eve.holt@reqres.in",
-                password = $"{password}"
+                password = password
             }));
 
             RestResponse response = client.Execute(request);

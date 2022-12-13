@@ -76,8 +76,8 @@ namespace Drips.API.Tests
 
             request.AddBody(request.AddJsonBody(new
             {
-                email = $"{email}",
-                password = $"{password}"
+                email = email,
+                password = password
             }));
 
             RestResponse response = client.Execute(request);

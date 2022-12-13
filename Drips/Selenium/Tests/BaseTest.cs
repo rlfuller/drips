@@ -13,6 +13,7 @@ namespace Drips.Tests
         public void Setup()
         {
             driver.Navigate().GoToUrl(config.BaseUrl);
+            driver.Manage().Window.Maximize();
         }
 
         [TearDown]

@@ -5,6 +5,7 @@ using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,15 @@ namespace Drips.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = "header .greet > .logged-in")]
         private IWebElement signedInMsg { get; set; }
 
+        [FindsBy(How = How.ClassName, Using = "counter-number")]
+        private IWebElement cartQty { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "showcart")]
+        private IWebElement cartIcon { get; set; }
+
+        [FindsBy(How = How.Id, Using = "top-cart-btn-checkout")]
+        private IWebElement proceedToCheckoutButton { get; set; }
+
         public PageBase(IWebDriver driver)
         {
             this.driver = driver;
@@ -35,6 +45,26 @@ namespace Drips.Selenium.Pages
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             return wait.Until(d => d.FindElement(by));
+        }
+
+        public bool ClickWhenClickable(By by) {
+            return ClickWhenClickable(driver.FindElement(by));
+        }
+        public bool ClickWhenClickable(IWebElement el)
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            return wait.Until(d =>
+            {
+                try
+                {
+                    el.Click();
+                    return true;
+                }
+                catch (ElementNotInteractableException) // also covers ElementClickInterceptedException, which is a direct subclass of ElementNotInteractableException
+                {
+                    return false;
+                }
+            });
         }
 
         public IList<IWebElement> WaitForElements(By by)
@@ -59,6 +89,8 @@ namespace Drips.Selenium.Pages
             searchInput.SendKeys(itemKeyword);
             searchInput.SendKeys(Keys.Enter);
 
+            WaitForText(By.CssSelector("h1.page-title"), itemKeyword);
+
             return this;
         }
 
@@ -74,6 +106,28 @@ namespace Drips.Selenium.Pages
             return WaitForText(By.CssSelector("header .greet > .logged-in"), text);
         }
 
+        public PageBase ClickMenuItem(string menuText)
+        {
+            driver.FindElement(By.LinkText(menuText)).Click();
+            return this;
+        }
+
+        public string GetCartQuantityLabel()
+        {
+            WaitForText(By.ClassName("counter-number"), "1");
+            return cartQty.Text;
+        }
+
+        public PageBase ClickCartIcon()
+        {
+            cartIcon.Click();
+            return this;
+        }
+
+        public void ClickProceedToCheckoutButton()
+        {
+            proceedToCheckoutButton.Click();
+        }
         
     }
 }
