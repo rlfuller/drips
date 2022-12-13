@@ -8,6 +8,9 @@
 
         string ITestConfig.Password => "Test123$";
 
+        string ITestConfig.UserFirstName => "Jane";
+        string ITestConfig.UserLastName => "Doe";
+
         string ITestConfig.ApiBaseUrl => "https://reqres.in/api/";
     }
 }

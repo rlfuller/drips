@@ -12,11 +12,6 @@ namespace Drips.Selenium.Pages
 {
     internal class SearchResultsPage : PageBase
     {
-       // IWebDriver driver;
-
-        
-      //  [FindsBy(How = How.Id, Using = "search")]
-      //  private IWebElement searchInput { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "div.search.results")]
         private IWebElement searchResults { get; set; }
@@ -31,8 +26,6 @@ namespace Drips.Selenium.Pages
         private IWebElement noReturnedResults { get; set; }
 
 
-
-
         public SearchResultsPage(IWebDriver driver) : base(driver)
         {
         }
@@ -41,7 +34,6 @@ namespace Drips.Selenium.Pages
         public string GetMessage()
         {
             return WaitForElement(By.CssSelector("#maincontent div.message.notice")).Text;
-          
         }
 
         public IList<IWebElement> GetSearchResults()
