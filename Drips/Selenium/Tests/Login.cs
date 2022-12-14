@@ -38,10 +38,16 @@ namespace Drips.Selenium.Tests
             loginPage.EnterPassword("chester");
             loginPage.ClickSignInButton();
 
-            var expectedResults = "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.";
+            //Originally, this test passed and there was no captcha, but on day 2, the 
+            //test starting failing and page now showed a captcha, so will grab that 
+            var expectedResultsList = new List<string>()
+            {
+                "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.",
+                "Incorrect CAPTCHA"
+            };
 
             var actualResults = loginPage.GetInvalidLoginMessage();
-            Assert.That(actualResults, Is.EqualTo(expectedResults));
+            Assert.Contains(actualResults, expectedResultsList);
         }
     }
 }

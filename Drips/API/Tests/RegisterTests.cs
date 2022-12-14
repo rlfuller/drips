@@ -36,7 +36,6 @@ namespace Drips.API.Tests
 
             Assert.That(body, Is.Not.Null);
             Assert.That(body.Token, Is.Not.Empty);
-            Assert.That(body.Id, Is.Not.Empty);
 
             //now try to login since we are registered
             request = new RestRequest("login", Method.Post);
@@ -55,8 +54,8 @@ namespace Drips.API.Tests
 
             LoginResponseBodySuccessful loginBody = JsonConvert.DeserializeObject<LoginResponseBodySuccessful>(response.Content);
 
-            Assert.That(body, Is.Not.Null);
-            Assert.That(body.Token, Is.Not.Empty);
+            Assert.That(loginBody, Is.Not.Null);
+            Assert.That(loginBody.Token, Is.Not.Empty);
 
         }
 

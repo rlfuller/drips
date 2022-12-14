@@ -1,5 +1,8 @@
 ﻿namespace Drips.Configuration
 {
+    /// <summary>
+    /// Used to store environment variables for a Stage Environment
+    /// </summary>
     internal class StageTestConfig : ITestConfig
     {
         string ITestConfig.BaseUrl => "https://stage.magento.softwaretestingboard.com/";

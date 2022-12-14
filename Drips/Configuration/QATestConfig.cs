@@ -1,5 +1,9 @@
 ﻿namespace Drips.Configuration
 {
+
+    /// <summary>
+    /// Used to store environment variables needed to run tests in QA enviornment
+    /// </summary>
     internal class QATestConfig : ITestConfig
     {
         string ITestConfig.BaseUrl => "https://magento.softwaretestingboard.com/";

@@ -17,11 +17,9 @@ namespace Drips.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = "div.message-error")]
         private IWebElement signInIncorrectMessage { get; set; }
 
-
         public CustomerLoginPage(IWebDriver driver) : base(driver)
         {
         }
-
 
         public CustomerLoginPage EnterEmailAddress(string email)
         {

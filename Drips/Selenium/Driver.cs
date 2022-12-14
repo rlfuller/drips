@@ -10,18 +10,11 @@ namespace Drips.Selenium
     /// </summary>
     public class Driver
     {
-        //private static IWebDriver webDriver { get; set; }
+        public static IWebDriver CurrentEnvironmentWebDriver => Create(Environment.GetEnvironmentVariable(Constants.AutomationBrowserVar));
 
-        public static IWebDriver Create()
+        public static IWebDriver Create(string? browser)
         {
-            //if (webDriver is not null)
-            //{
-            //    return webDriver;
-            //}
-
             IWebDriver webDriver;
-
-            string? browser = Environment.GetEnvironmentVariable(Constants.AutomationBrowserVar);
 
             if (browser is null)
             {

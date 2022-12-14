@@ -33,6 +33,8 @@ If you are not using Visual Studio, you can run this repository in Visual Studio
 3. Select Run Tests
 * Alternatively, you can select Test then Run All Tests from the top menu in Visual Studio. 
 
+Please note that these tests were created with best practices in mind and are executed against test sites. Certain API tests are failing  because of the expectation of certain status codes that are not being sent. 
+
 
 ## Author
 

@@ -32,9 +32,13 @@ namespace Drips.Selenium.Pages
 
         public string GetShippingInformation()
         {
+            //Scroll so the element is in view and can be interacted with
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("arguments[0].scrollIntoView(true)", shippingInformation);
-            Thread.Sleep(150);
+            
+            //Certain browsers (firefox) take extra before scroll completes
+            Thread.Sleep(200);
+            
             return shippingInformation.Text;
         }
     }

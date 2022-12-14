@@ -22,7 +22,6 @@ namespace Drips.Selenium.Pages
         [FindsBy(How = How.XPath, Using = "//*[contains(@role, 'alert')]")]
         private IWebElement itemAddedToCartAlert { get; set; }
 
-
         public ProductPage(IWebDriver driver) : base(driver)
         {
         }
@@ -45,7 +44,7 @@ namespace Drips.Selenium.Pages
         {
             quantityInput.Click();
             quantityInput.SendKeys(Keys.Enter);
-            //Thread.Sleep(5000);
+
             WaitForElement(By.XPath("//*[contains(@role, 'alert')]"));
 
             return this;
@@ -55,7 +54,7 @@ namespace Drips.Selenium.Pages
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("arguments[0].scrollIntoView(true);", addToCartButton);
-            //js.ExecuteScript("arguments[0].click();", addToCartButton);
+
             ClickWhenClickable(addToCartButton);
             return this;
         }

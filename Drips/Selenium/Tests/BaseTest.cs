@@ -4,6 +4,9 @@ using OpenQA.Selenium;
 
 namespace Drips.Tests
 {
+    /// <summary>
+    /// Superclass inherited by all Selenium tests. This class will setup the driver as well as create a configuration object based on the environment. It will also handle setup and teardown actions that are common to all tests.
+    /// </summary>
     public class BaseTest
     {
         protected IWebDriver driver;
@@ -12,7 +15,7 @@ namespace Drips.Tests
         [SetUp]
         public void Setup()
         {
-            driver = Driver.Create();
+            driver = Driver.CurrentEnvironmentWebDriver;
             driver.Navigate().GoToUrl(config.BaseUrl);
             driver.Manage().Window.Maximize();
         }

@@ -3,6 +3,9 @@ using RestSharp;
 
 namespace Drips.API.Tests
 {
+    /// <summary>
+    /// Superclass for API tests. Creates rest client and configuration. 
+    /// </summary>
     internal class BaseTest
     {
         protected RestClient client;

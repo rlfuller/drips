@@ -9,16 +9,18 @@ namespace Drips.Selenium.Tests
         [Test]
         public void AddItemToCartAndCheckoutHappyPath()
         {
+            //Main page of the site
             string productName;
             var search = new BasePage(driver);
        
             search.SearchForItem("tote");
-
             
+            //Results appear from search
             var resultsPage = new SearchResultsPage(driver);
             resultsPage.WaitForText(By.CssSelector("h1.page-title"), "tote");
             resultsPage.SelectRandomItemAndClick();
 
+            //On the products page
             var productPage = new ProductPage(driver);
 
             //Grab the name of the product we've selected for verification in checkout
@@ -26,6 +28,7 @@ namespace Drips.Selenium.Tests
 
             productPage.ClickAddToCartButton();
 
+            //Check cart showing correct quantity
             var basePage = new BasePage(driver);
             var expectedQtyInCart = "1";
 
@@ -35,6 +38,7 @@ namespace Drips.Selenium.Tests
 
             basePage.ClickCartIcon().ClickProceedToCheckoutButton();
 
+            //On the shipping page
             var checkoutShippingPage = new CheckoutShippingPage(driver);
 
             //validate our item in cart is correct

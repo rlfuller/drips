@@ -24,7 +24,6 @@ namespace Drips.Selenium.Pages
         {
         }
         
-
         public string GetMessage()
         {
             return WaitForElement(By.CssSelector("#maincontent div.message.notice")).Text;
@@ -39,10 +38,12 @@ namespace Drips.Selenium.Pages
         {
             try
             {
+                //GetSearchResults returns a list of products from search. We are going to
+                //click on a random item in the list
                 var searchResults = GetSearchResults();
                 int randomIndex = config.Random.Next(0, searchResults.Count);
 
-                var item = searchResults[randomIndex];//.FindElement(By.CssSelector(".product-item-info"));
+                var item = searchResults[randomIndex];
 
                 IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
                 js.ExecuteScript("arguments[0].scrollIntoView(true);", item);
