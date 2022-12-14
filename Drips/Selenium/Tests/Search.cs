@@ -23,7 +23,7 @@ namespace Drips.Selenium.Tests
         [Test]
         public void SearchForItemsNotInCatalog()
         {
-            var basePage = new PageBase(driver);
+            var basePage = new BasePage(driver);
                      
             basePage.SearchForItem("dsfsdfs");
 

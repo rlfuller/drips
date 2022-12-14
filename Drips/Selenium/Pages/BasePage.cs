@@ -1,17 +1,16 @@
 ﻿using Drips.Configuration;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Drips.Selenium.Pages
 {
-    internal class PageBase
+    internal class BasePage
     {
         protected IWebDriver driver;
         protected ITestConfig config = TestConfigFactory.CurrentEnvironmentTestConfig;
@@ -35,19 +34,26 @@ namespace Drips.Selenium.Pages
         [FindsBy(How = How.Id, Using = "top-cart-btn-checkout")]
         private IWebElement proceedToCheckoutButton { get; set; }
 
-        public PageBase(IWebDriver driver)
+        public BasePage(IWebDriver driver)
         {
             this.driver = driver;
+            WaitUntilReady();
             PageFactory.InitElements(driver, this);
+        }
+
+        public virtual void WaitUntilReady()
+        {
+            WaitForElement(By.Id("search"));
         }
 
         public IWebElement WaitForElement(By by)
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             return wait.Until(d => d.FindElement(by));
         }
 
-        public bool ClickWhenClickable(By by) {
+        public bool ClickWhenClickable(By by)
+        {
             return ClickWhenClickable(driver.FindElement(by));
         }
         public bool ClickWhenClickable(IWebElement el)
@@ -78,12 +84,12 @@ namespace Drips.Selenium.Pages
 
         public string WaitForText(By by, string text)
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             wait.Until(d => d.FindElement(by).Text.Contains(text));
             return driver.FindElement(by).Text;
         }
 
-        public PageBase SearchForItem(string itemKeyword)
+        public BasePage SearchForItem(string itemKeyword)
         {
             searchInput.Click();
             searchInput.SendKeys(itemKeyword);
@@ -94,7 +100,7 @@ namespace Drips.Selenium.Pages
             return this;
         }
 
-        public PageBase ClickSignInLink()
+        public BasePage ClickSignInLink()
         {
             WaitForElement(By.CssSelector("header li.authorization-link > a"));
             signInLink.Click();
@@ -106,7 +112,7 @@ namespace Drips.Selenium.Pages
             return WaitForText(By.CssSelector("header .greet > .logged-in"), text);
         }
 
-        public PageBase ClickMenuItem(string menuText)
+        public BasePage ClickMenuItem(string menuText)
         {
             driver.FindElement(By.LinkText(menuText)).Click();
             return this;
@@ -118,7 +124,7 @@ namespace Drips.Selenium.Pages
             return cartQty.Text;
         }
 
-        public PageBase ClickCartIcon()
+        public BasePage ClickCartIcon()
         {
             cartIcon.Click();
             return this;
@@ -128,6 +134,6 @@ namespace Drips.Selenium.Pages
         {
             proceedToCheckoutButton.Click();
         }
-        
+
     }
 }

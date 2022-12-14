@@ -3,7 +3,7 @@ using SeleniumExtras.PageObjects;
 
 namespace Drips.Selenium.Pages
 {
-    internal class CustomerLoginPage : PageBase
+    internal class CustomerLoginPage : BasePage
     {
         [FindsBy(How = How.Id, Using = "email")]
         private IWebElement emailInput { get; set; }

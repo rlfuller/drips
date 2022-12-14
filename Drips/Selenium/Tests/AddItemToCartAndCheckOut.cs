@@ -6,14 +6,11 @@ namespace Drips.Selenium.Tests
 {
     internal class AddItemToCartAndCheckOut : BaseTest
     {
-        internal string ProductName;
-
         [Test]
-
         public void AddItemToCartAndCheckoutHappyPath()
         {
-
-            var search = new PageBase(driver);
+            string productName;
+            var search = new BasePage(driver);
        
             search.SearchForItem("tote");
 
@@ -24,40 +21,50 @@ namespace Drips.Selenium.Tests
 
             var productPage = new ProductPage(driver);
 
-            ProductName = productPage.GetProductName();
+            //Grab the name of the product we've selected for verification in checkout
+            productName = productPage.GetProductName();
 
             productPage.ClickAddToCartButton();
 
-            //productPage.AddItemToCartViaQuantityInput();
-
-            var basePage = new PageBase(driver);
+            var basePage = new BasePage(driver);
             var expectedQtyInCart = "1";
 
             var actualQtyInCart = basePage.GetCartQuantityLabel();
 
             Assert.That(actualQtyInCart, Is.EqualTo(expectedQtyInCart));
 
-
             basePage.ClickCartIcon().ClickProceedToCheckoutButton();
 
             var checkoutShippingPage = new CheckoutShippingPage(driver);
-            checkoutShippingPage.WaitForPageToLoad();
 
+            //validate our item in cart is correct
+            var actualProduct = checkoutShippingPage
+                .ToggleOrderSummary()
+                .GetProductName();
+            Assert.That(actualProduct, Is.EqualTo(productName));
 
+            checkoutShippingPage.EnterShippingInformation();
+            checkoutShippingPage.ClickNextButton();
 
+            //On the payment page
+            var checkoutPaymentPage = new CheckoutPaymentPage(driver);
 
-           // var loginPage = new CustomerLoginPage(driver);
+            //validate that the shipping information we previous entered is correct
+            var actualShippingInfo = checkoutPaymentPage.GetShippingInformation();
+            Assert.True(actualShippingInfo.Contains(config.ShippingInfo["firstName"]));
+            Assert.True(actualShippingInfo.Contains(config.ShippingInfo["lastName"]));
+            Assert.True(actualShippingInfo.Contains(config.ShippingInfo["streetAddress"]));
+            Assert.True(actualShippingInfo.Contains(config.ShippingInfo["city"]));
+            Assert.True(actualShippingInfo.Contains(config.ShippingInfo["zip"]));
+            Assert.True(actualShippingInfo.Contains(config.ShippingInfo["phone"]));
 
-          //  loginPage.EnterEmailAddress(config.Username);
-          //  loginPage.EnterPassword(config.Password);
-          //  loginPage.ClickSignInButton();
+            checkoutPaymentPage.ClickPlaceOrderButton();
 
-          //  basePage = new PageBase(driver);
+            //On the confirmation page
+            var orderConfirmation = new OrderConfirmationSuccessPage(driver);
 
-         //   var expectedSignInText = $"{config.UserFirstName} {config.UserLastName}";
-         //   var signInMsg = basePage.WaitForSignInMessage(expectedSignInText);
-
-         //   Assert.True(signInMsg.Contains(expectedSignInText));
+            //verify the page is Success
+            Assert.True(orderConfirmation.GetPageTitle().Contains("Thank you"));
         }
     }
 }

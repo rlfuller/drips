@@ -9,7 +9,7 @@ namespace Drips.Selenium.Tests
         public void LoginWithValidCredentials()
         {
 
-            var basePage = new PageBase(driver);
+            var basePage = new BasePage(driver);
             basePage.ClickSignInLink();
 
             var loginPage = new CustomerLoginPage(driver);
@@ -18,7 +18,7 @@ namespace Drips.Selenium.Tests
             loginPage.EnterPassword(config.Password);
             loginPage.ClickSignInButton();
 
-            basePage = new PageBase(driver);
+            basePage = new BasePage(driver);
 
             var expectedSignInText = $"{config.UserFirstName} {config.UserLastName}";
             var signInMsg = basePage.WaitForSignInMessage(expectedSignInText);
@@ -29,7 +29,7 @@ namespace Drips.Selenium.Tests
         [Test]
         public void LoginWithInvalidCredentials()
         {
-            var basePage = new PageBase(driver);
+            var basePage = new BasePage(driver);
             basePage.ClickSignInLink();
 
             var loginPage = new CustomerLoginPage(driver);

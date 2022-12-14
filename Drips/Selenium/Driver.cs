@@ -10,14 +10,16 @@ namespace Drips.Selenium
     /// </summary>
     public class Driver
     {
-        private static IWebDriver webDriver { get; set; }
+        //private static IWebDriver webDriver { get; set; }
 
-        public static IWebDriver GetInstance()
+        public static IWebDriver Create()
         {
-            if (webDriver is not null)
-            {
-                return webDriver;
-            }
+            //if (webDriver is not null)
+            //{
+            //    return webDriver;
+            //}
+
+            IWebDriver webDriver;
 
             string? browser = Environment.GetEnvironmentVariable(Constants.AutomationBrowserVar);
 
@@ -28,8 +30,8 @@ namespace Drips.Selenium
 
             switch (browser.ToLower())
             {
-                case "chrome":
-                    webDriver = new ChromeDriver();
+                case "firefox":
+                    webDriver = new FirefoxDriver();
                     break;
 
                 case "edge":
@@ -37,7 +39,7 @@ namespace Drips.Selenium
                     break;
 
                 default:
-                    webDriver = new FirefoxDriver();
+                    webDriver = new ChromeDriver();
                     break;
             }
 

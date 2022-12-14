@@ -1,20 +1,26 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
 
 namespace Drips.Selenium.Pages
 {
-    internal class OrderConfirmationSuccessPage : PageBase
+    internal class OrderConfirmationSuccessPage : BasePage
     {
-        [FindsBy(How = How.CssSelector, Using = ".checkout-success > p > span")]
-        private IWebElement orderNumber { get; set; }
+        [FindsBy(How = How.CssSelector, Using = ".page-title")]
+        private IWebElement pageTitle { get; set; }
         
         public OrderConfirmationSuccessPage(IWebDriver driver) : base(driver)
         {
         }
 
-        public string GetOrderNumber()
+        public override void WaitUntilReady()
         {
-            return orderNumber.Text;
+            WaitForText(By.CssSelector(".page-title"), "Thank you for your purchase!");
+        }
+
+        public string GetPageTitle()
+        {
+            return pageTitle.Text;
         }
     }
 }

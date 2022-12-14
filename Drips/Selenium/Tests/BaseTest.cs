@@ -6,12 +6,13 @@ namespace Drips.Tests
 {
     public class BaseTest
     {
-        protected IWebDriver driver = Driver.GetInstance();
+        protected IWebDriver driver;
         protected ITestConfig config = TestConfigFactory.CurrentEnvironmentTestConfig;
 
         [SetUp]
         public void Setup()
         {
+            driver = Driver.Create();
             driver.Navigate().GoToUrl(config.BaseUrl);
             driver.Manage().Window.Maximize();
         }
@@ -19,8 +20,13 @@ namespace Drips.Tests
         [TearDown]
         public void Teardown()
         {
-           driver.Close();
-           driver.Quit();
+            driver.Close();
+        }
+
+        [OneTimeTearDown]
+        public void TearDownOnce()
+        {
+            driver.Quit();
         }
     }
 }

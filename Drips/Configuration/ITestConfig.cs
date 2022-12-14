@@ -31,6 +31,25 @@
 
         string ApiBaseUrl { get; }
 
+        Dictionary<string, string> ShippingInfo
+        {
+            get
+            {
+                return new Dictionary<string, string>()
+                {
+                    { "email", Username },
+                    { "firstName", UserFirstName },
+                    { "lastName", UserLastName },
+                    { "streetAddress", "1 Main Street" },
+                    { "city", "Charlotte" },
+                    { "state", "North Carolina" },
+                    { "zip", "28203" },
+                    { "country", "United States" },
+                    { "phone", "123456789" }
+                };
+            }
+        }
+
         Random Random {
             get
             {

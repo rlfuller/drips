@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace Drips.Selenium.Pages
 {
-    internal class ProductPage : PageBase
+    internal class ProductPage : BasePage
     {
 
         [FindsBy(How = How.Id, Using = "qty")]
@@ -25,9 +25,13 @@ namespace Drips.Selenium.Pages
 
         public ProductPage(IWebDriver driver) : base(driver)
         {
+        }
+
+        public override void WaitUntilReady()
+        {
             WaitForElement(By.CssSelector("h1.page-title"));
         }
-        
+
         public ProductPage AddQuantity(string qty)
         {
             quantityInput.Click();
@@ -41,7 +45,7 @@ namespace Drips.Selenium.Pages
         {
             quantityInput.Click();
             quantityInput.SendKeys(Keys.Enter);
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
             WaitForElement(By.XPath("//*[contains(@role, 'alert')]"));
 
             return this;

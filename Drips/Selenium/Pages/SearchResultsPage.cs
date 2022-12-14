@@ -4,7 +4,7 @@ using SeleniumExtras.PageObjects;
 
 namespace Drips.Selenium.Pages
 {
-    internal class SearchResultsPage : PageBase
+    internal class SearchResultsPage : BasePage
     {
 
         [FindsBy(How = How.CssSelector, Using = "div.search.results")]
