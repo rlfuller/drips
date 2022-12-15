@@ -34,7 +34,7 @@ namespace Drips.API.Tests
 
             UserBody body = JsonConvert.DeserializeObject<UserBody>(response.Content);
 
-            Assert.That(body.user.Id, Is.EqualTo(2));
+            Assert.That(body.user.Id, Is.EqualTo(userId));
         }
 
         /// <summary>Validate that request for invalid user fails</summary>

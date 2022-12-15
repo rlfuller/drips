@@ -8,12 +8,9 @@ namespace Drips.Selenium.Pages
         [FindsBy(How = How.CssSelector, Using = ".actions-toolbar .checkout")]
         private IWebElement placeOrderButton { get; set;  }
 
-        [FindsBy(How = How.CssSelector, Using = ".opc-block-summary")]
-        private IWebElement orderSummary { get; set; }
-
         [FindsBy(How = How.CssSelector, Using = ".opc-block-shipping-information")]
         private IWebElement shippingInformation { get; set; }
-        
+
         public CheckoutPaymentPage(IWebDriver driver) : base(driver)
         {
         }
@@ -32,14 +29,7 @@ namespace Drips.Selenium.Pages
 
         public string GetShippingInformation()
         {
-            //Scroll so the element is in view and can be interacted with
-            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-            js.ExecuteScript("arguments[0].scrollIntoView(true)", shippingInformation);
-            
-            //Certain browsers (firefox) take extra before scroll completes
-            Thread.Sleep(200);
-            
-            return shippingInformation.Text;
+            return ScrollIntoView(shippingInformation).Text;
         }
     }
 }

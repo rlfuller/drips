@@ -25,14 +25,13 @@ namespace Drips.Selenium.Tests
 
             //Grab the name of the product we've selected for verification in checkout
             productName = productPage.GetProductName();
-
             productPage.ClickAddToCartButton();
 
             //Check cart showing correct quantity
             var basePage = new BasePage(driver);
             var expectedQtyInCart = "1";
 
-            var actualQtyInCart = basePage.GetCartQuantityLabel();
+            var actualQtyInCart = basePage.GetCartQuantityLabel(expectedQtyInCart);
 
             Assert.That(actualQtyInCart, Is.EqualTo(expectedQtyInCart));
 

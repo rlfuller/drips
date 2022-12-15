@@ -59,7 +59,7 @@ namespace Drips.Selenium.Pages
             lastNameInput.SendKeys(config.ShippingInfo["lastName"]);
             streetAddressInput.SendKeys(config.ShippingInfo["streetAddress"]);
             cityInput.SendKeys(config.ShippingInfo["city"]);
-            ClickWhenClickable(stateProvinceSelect);
+            ClickWhenClickable(ScrollIntoView(stateProvinceSelect));
             stateProvinceSelect.SendKeys(config.ShippingInfo["state"]);
             zipCodeInput.SendKeys(config.ShippingInfo["zip"]);
             phoneInput.SendKeys(config.ShippingInfo["phone"]);
@@ -75,7 +75,7 @@ namespace Drips.Selenium.Pages
 
         public string GetProductName()
         {
-            return productName.Text;
+            return WaitForElement(By.CssSelector(".product-item-name")).Text;
         }
 
         public CheckoutShippingPage ToggleOrderSummary()

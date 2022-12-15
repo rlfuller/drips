@@ -14,9 +14,6 @@ namespace Drips.Selenium.Pages
         [FindsBy(How = How.Id, Using = "send2")]
         private IWebElement signInButton { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = "div.message-error")]
-        private IWebElement signInIncorrectMessage { get; set; }
-
         public CustomerLoginPage(IWebDriver driver) : base(driver)
         {
         }
@@ -43,8 +40,7 @@ namespace Drips.Selenium.Pages
 
         public string GetInvalidLoginMessage()
         {
-            WaitForElement(By.CssSelector("div.message-error"));
-            return signInIncorrectMessage.Text;
+            return WaitForElement(By.CssSelector("div.message-error")).Text;
         }
     }
 }

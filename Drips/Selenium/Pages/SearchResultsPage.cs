@@ -6,20 +6,6 @@ namespace Drips.Selenium.Pages
 {
     internal class SearchResultsPage : BasePage
     {
-
-        [FindsBy(How = How.CssSelector, Using = "div.search.results")]
-        private IWebElement searchResults { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "ol.product-items")]
-        private IWebElement returnedResults { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "li.product-item")]
-        private IList<IWebElement> allItemsFromSearch { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "#maincontent div.message.notice")]
-        private IWebElement noReturnedResults { get; set; }
-
-
         public SearchResultsPage(IWebDriver driver) : base(driver)
         {
         }
@@ -45,9 +31,7 @@ namespace Drips.Selenium.Pages
 
                 var item = searchResults[randomIndex];
 
-                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                js.ExecuteScript("arguments[0].scrollIntoView(true);", item);
-
+                ScrollIntoView(item);
                 ClickWhenClickable(item);
             }
             catch (StaleElementReferenceException ex)

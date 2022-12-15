@@ -15,15 +15,8 @@ namespace Drips.Selenium.Pages
         protected IWebDriver driver;
         protected ITestConfig config = TestConfigFactory.CurrentEnvironmentTestConfig;
 
-
         [FindsBy(How = How.Id, Using = "search")]
         private IWebElement searchInput { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "header li.authorization-link > a")]
-        private IWebElement signInLink { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "header .greet > .logged-in")]
-        private IWebElement signedInMsg { get; set; }
 
         [FindsBy(How = How.ClassName, Using = "counter-number")]
         private IWebElement cartQty { get; set; }
@@ -41,6 +34,9 @@ namespace Drips.Selenium.Pages
             PageFactory.InitElements(driver, this);
         }
 
+        /// <summary>
+        /// Virtual method to be overridden by subclasses to indicate when that page should be considered ready.
+        /// </summary>
         public virtual void WaitUntilReady()
         {
             WaitForElement(By.Id("search"));
@@ -82,11 +78,30 @@ namespace Drips.Selenium.Pages
             });
         }
 
-        public string WaitForText(By by, string text)
+        public string? WaitForText(By by, string text)
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-            wait.Until(d => d.FindElement(by).Text.Contains(text));
-            return driver.FindElement(by).Text;
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            return wait.Until(d =>
+            {
+                var textFound = d.FindElement(by).Text;
+                if (textFound.Contains(text))
+                {
+                    return textFound;
+                }
+                return null;
+            });
+        }
+
+        public IWebElement ScrollIntoView(IWebElement el)
+        {
+            //Scroll so the element is in view and can be interacted with
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView(true)", el);
+
+            //Certain browsers (firefox) take extra before scroll completes
+            Thread.Sleep(200);
+
+            return el;
         }
 
         public BasePage SearchForItem(string itemKeyword)
@@ -102,12 +117,11 @@ namespace Drips.Selenium.Pages
 
         public BasePage ClickSignInLink()
         {
-            WaitForElement(By.CssSelector("header li.authorization-link > a"));
-            signInLink.Click();
+            WaitForElement(By.CssSelector("header li.authorization-link > a")).Click();
             return this;
         }
 
-        public string WaitForSignInMessage(string text)
+        public string? WaitForSignInMessage(string text)
         {
             return WaitForText(By.CssSelector("header .greet > .logged-in"), text);
         }
@@ -118,9 +132,9 @@ namespace Drips.Selenium.Pages
             return this;
         }
 
-        public string GetCartQuantityLabel()
+        public string GetCartQuantityLabel(string quantity)
         {
-            WaitForText(By.ClassName("counter-number"), "1");
+            WaitForText(By.ClassName("counter-number"), quantity);
             return cartQty.Text;
         }
 
